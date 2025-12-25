@@ -1,0 +1,21 @@
+mode: paper
+symbols: ["SPY", "QQQ"]
+timeframe: "1m"
+minutes: 5
+live_trading:
+  enabled: false
+  confirmation_token: "CONFIRM_LIVE_TRADE"
+risk:
+  max_positions: 5
+  daily_loss_limit: 1000
+  max_drawdown_pct: 0.2
+  atr_period: 14
+  risk_per_trade: 0.01
+fees:
+  commission_per_share: 0.005
+  slippage_bps: 1
+logging:
+  level: INFO
+  file: logs/system.log
+backtest:
+  sample_data: data/sample/spy_sample.csv
