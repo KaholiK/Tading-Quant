@@ -1,0 +1,28 @@
+[core]
+chain = "solana"
+dry_run = true
+max_position_usd = 250
+max_open_positions = 3
+max_daily_loss_usd = 500
+slippage_bps = 50
+min_liquidity_usd = 10000
+min_vol_5m_usd = 5000
+min_vol_1h_usd = 20000
+min_pair_age_seconds = 3600
+rugcheck_threshold = 0.6
+cooldown_seconds_after_trade = 30
+loss_streak_cooldown = 300
+enable_strategy_s1 = true
+enable_strategy_s2 = true
+kill_switch = false
+core_api_port = 8000
+
+[keys]
+keypair_path = "~/.config/solana/id.json"
+keypair_passphrase_env = "KEYFILE_PASSPHRASE"
+base58_secret_env = "BASE58_SECRET"
+
+[telegram]
+bot_token = ""
+admin_user_ids = [12345]
+default_chat_id = ""
