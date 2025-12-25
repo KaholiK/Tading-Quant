@@ -1,19 +1,16 @@
-from trading_system.strategies.ema_trend import EMATrendStrategy
-from trading_system.strategies.mean_reversion import MeanReversionStrategy
-from trading_system.strategies.breakout import BreakoutStrategy
-from trading_system.data.cache import DataCache
-from trading_system.core.events import MarketDataEvent
+from memesensei.core.strategies.momentum import MomentumBreakoutStrategy, MarketSnapshot
+from memesensei.core.strategies.mean_reversion import MeanReversionStrategy, MeanReversionWindow
 
 
-def test_strategies_generate_signals():
-    cache = DataCache()
-    event = MarketDataEvent(symbol="SPY", data={"close": 100})
-    ema = EMATrendStrategy(cache)
-    mean = MeanReversionStrategy(cache)
-    bo = BreakoutStrategy(cache)
-    cache.add("SPY", 100)
-    cache.add("SPY", 101)
-    cache.add("SPY", 102)
-    assert ema.on_bar(event).type == "SIGNAL"
-    assert mean.on_bar(event).type == "SIGNAL"
-    assert bo.on_bar(event).type == "SIGNAL"
+def test_momentum_breakout_signal():
+    strat = MomentumBreakoutStrategy(min_volume=1000, min_liquidity=5000)
+    snap = MarketSnapshot(price=1.0, volume_5m=2000, liquidity=6000)
+    assert strat.generate_signal(snap) == "buy"
+
+
+def test_mean_reversion_signal():
+    strat = MeanReversionStrategy(exit_after_seconds=60)
+    window = MeanReversionWindow(price=0.8, average=1.0, std=0.1)
+    assert strat.generate_signal(window) == "buy"
+    window2 = MeanReversionWindow(price=1.2, average=1.0, std=0.1)
+    assert strat.generate_signal(window2) == "sell"
