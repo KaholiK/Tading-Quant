@@ -1,0 +1,19 @@
+chain = "solana"
+dry_run = true
+enable_strategy_s1 = true
+enable_strategy_s2 = true
+kill_switch = false
+core_api_port = 8000
+
+[risk_limits]
+max_position_usd = 200
+max_open_positions = 3
+max_daily_loss_usd = 500
+slippage_bps = 50
+min_liquidity_usd = 20000
+min_vol_5m_usd = 10000
+min_vol_1h_usd = 50000
+min_pair_age_seconds = 1800
+rugcheck_threshold = 0.75
+cooldown_seconds_after_trade = 60
+loss_streak_cooldown = 300

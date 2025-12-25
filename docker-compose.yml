@@ -1,18 +1,30 @@
-version: '3'
+version: '3.9'
 services:
-  engine:
+  core:
     build: .
-    command: ["python", "-m", "trading_system.cli.run", "--mode", "paper", "--symbols", "SPY,QQQ", "--timeframe", "1m", "--minutes", "2"]
-    volumes:
-      - ./:/app
+    command: ["uvicorn", "memesensei.core.api.server:app", "--host", "0.0.0.0", "--port", "8000"]
     environment:
-      - ENABLE_LIVE_TRADING=false
-  dashboard:
-    build: .
-    command: ["uvicorn", "trading_system.services.dashboard:app", "--host", "0.0.0.0", "--port", "8000"]
+      - DRY_RUN=true
+      - CORE_API_PORT=8000
+      - KILL_SWITCH=false
     ports:
       - "8000:8000"
     volumes:
       - ./:/app
+  telegram:
+    build: .
+    command: ["python", "-m", "memesensei.telegram.poller"]
     environment:
-      - ENABLE_LIVE_TRADING=false
+      - ADMIN_TELEGRAM_USER_IDS=12345
+      - TELEGRAM_BOT_TOKEN=replace
+      - CORE_API_PORT=8000
+    depends_on:
+      - core
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - core
