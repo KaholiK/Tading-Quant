@@ -1,0 +1,18 @@
+version: '3'
+services:
+  engine:
+    build: .
+    command: ["python", "-m", "trading_system.cli.run", "--mode", "paper", "--symbols", "SPY,QQQ", "--timeframe", "1m", "--minutes", "2"]
+    volumes:
+      - ./:/app
+    environment:
+      - ENABLE_LIVE_TRADING=false
+  dashboard:
+    build: .
+    command: ["uvicorn", "trading_system.services.dashboard:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    environment:
+      - ENABLE_LIVE_TRADING=false
