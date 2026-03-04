@@ -1,0 +1,44 @@
+name: funded_scalper_moderate
+starting_equity: 50000
+broker:
+  provider: alpaca
+  account_type: margin
+  paper: true
+limits:
+  daily_max_loss_pct: 0.015
+  max_drawdown_pct: 0.06
+  max_position_pct: 0.10
+  max_trades_per_day: 50
+  max_concurrent_positions: 2
+  max_consecutive_losses: 4
+  max_slippage_bps: 8
+risk:
+  risk_per_trade_pct: 0.0018
+  stop_atr_mult: 1.2
+  take_profit_r_mult: 1.6
+  trailing_stop_atr_mult: 1.0
+  time_stop_bars: 8
+  force_flat_time_et: "15:55"
+execution:
+  order_type: marketable_limit
+  limit_offset_bps: 2.0
+  commission_per_share: 0.0035
+  slippage_bps: 2.0
+  partial_fill_ratio: 0.9
+strategy:
+  primary_timeframe: 1m
+  modules_enabled: [trend_pullback, mean_reversion, breakout]
+  spread_bps_max: 5.0
+  min_volume: 120000
+  atr_min: 0.03
+  atr_max: 4.0
+universe:
+  symbols: [SPY, QQQ, AAPL, MSFT, NVDA]
+  rth_only: true
+validation:
+  train_fraction: 0.65
+  walk_forward_windows: 4
+  monte_carlo_runs: 700
+  sensitivity_slippage_bps: [1.0, 2.0, 4.0, 6.0]
+data_path: data/sample/spy_sample.csv
+log_dir: logs
